@@ -10,16 +10,38 @@ namespace SolvingMaze
             string path = @"c:\small.txt";
             string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
 
-            string mapWidthHeight = fileLine[0];
-            string startXY = fileLine[1];
+            string [] mapwidthHeight = fileLine[0].Trim().Split(' ');
+            int width = Convert.ToInt32(mapwidthHeight[0]);
+            int height = Convert.ToInt32(mapwidthHeight[1]);
+
+            string [] startXY = fileLine[1].Trim().Split(' '); ;
+            int start_X = Convert.ToInt32(startXY[0]);
+            int start_Y = Convert.ToInt32(startXY[1]);
+
             string endXY = fileLine[2];
+            int end_X = Convert.ToInt32(endXY[0]);
+            int end_Y = Convert.ToInt32(endXY[1]);
+
 
             for (int i = 3; i < fileLine.Length; i++)
             {
                 //Console.WriteLine(fileLine[i]); //shows one line
-                for(int j = 0; j <  fileLine[i].Length; j++)
+                Console.Write("\n");
+                for (int j = 0; j < fileLine[i].Length; j++)
                 {
-                    Console.WriteLine(fileLine[i][j]); //shows each character of each line
+                    if (fileLine[i][j] == '1')
+                    {
+                        Console.Write("#");
+                    }
+
+                    else if (fileLine[i][j] == '0')
+                    {
+                        Console.Write(' ');
+                    }
+                    else
+                    {
+                        Console.Write(fileLine[i][j]); //shows each character of each line
+                    }
                 }
             }
 
