@@ -7,7 +7,7 @@ namespace SolvingMaze
     {
         static void ReadMazeFile()
         {
-            string path = @"c:\small.txt";
+            string path = @"c:\example.txt";
             string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
 
             string [] mapwidthHeight = fileLine[0].Trim().Split(' ');
@@ -22,10 +22,11 @@ namespace SolvingMaze
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
 
-
+            //deal with coordinates,
+            // - make top left corner 0,0 based
+          
             for (int i = 3; i < fileLine.Length; i++)
             {
-                //Console.WriteLine(fileLine[i]); //shows one line
                 Console.Write("\n");
                 for (int j = 0; j < fileLine[i].Length; j++)
                 {
@@ -33,10 +34,13 @@ namespace SolvingMaze
                     {
                         Console.Write("#");
                     }
-
                     else if (fileLine[i][j] == '0')
                     {
                         Console.Write(' ');
+                    }
+                    else if(fileLine[i][j] == ' ')
+                    {
+                        Console.Write("");
                     }
                     else
                     {
@@ -44,7 +48,6 @@ namespace SolvingMaze
                     }
                 }
             }
-
         }
 
         static void Main(string[] args)
