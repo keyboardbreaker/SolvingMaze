@@ -6,8 +6,13 @@ namespace SolvingMaze
 {
     class Program
     {
+
+        static int endX = 0;
+        static int endY = 0;
+
         static void ReadMazeFile()
         {
+
             string path = @"c:\small.txt";
             string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
 
@@ -22,6 +27,9 @@ namespace SolvingMaze
             string[] endXY = fileLine[2].Trim().Split(' '); ;
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
+
+            endX = end_X;
+            endY = end_Y;
 
             bool[,] maze = new bool[height, width];// rows by columns
 
@@ -38,12 +46,63 @@ namespace SolvingMaze
 
             //SOLVE MAZE
             //start_X, start_Y
-            if(maze[end_Y,end_X]   == false) //3 across 4 down, which 4 rows down 3 columwn right
+            if ((maze[end_Y, end_X] && maze[start_Y, start_X]) == false) //3 across 4 down, which 4 rows down 3 columwn right
             {
-                Console.ReadLine();
+                solveMazeRecursively(maze, start_Y, start_X, -1);
             }
 
+        } //end of  read maze file
 
+        static bool solveMazeRecursively(bool[,] maze, int x, int y, int d)
+        {
+            bool ok = false;
+            for (int i = 0; i < 4 && !ok; i++)
+                if (i != d)
+                    switch (i)
+                    {
+                        // 0 = up, 1 = right, 2 = down, 3 = left
+                        case 0:
+                            if (maze[y - 1, x] == false)
+                                ok = solveMazeRecursively(maze, x, y - 1, 2);
+                            break;
+                        case 1:
+                            if (maze[y, x + 1] == false)
+                                ok = solveMazeRecursively(maze, x + 1, y, 3);
+                            break;
+                        case 2:
+                            if (maze[y + 1, x] == false)
+                                ok = solveMazeRecursively(maze, x, y + 1, 0);
+                            break;
+                        case 3:
+                            if (maze[y, x - 1] == false)
+                                ok = solveMazeRecursively(maze, x - 1, y, 1);
+                            break;
+                    }
+            
+            // check for end condition
+            if (x == endX && y == endY)
+                ok = true;
+            // once we have found a solution, draw it as we unwind the recursion
+            if (ok)
+            {
+                maze[y, x] = 'X';
+                switch (d)
+                {
+                    case 0:
+                        maze[y - 1, x] = 'X';
+                        break;
+                    case 1:
+                        maze[y, x + 1] = 'X';
+                        break;
+                    case 2:
+                        maze[y + 1, x] = 'X';
+                        break;
+                    case 3:
+                        maze[y, x - 1] = 'X';
+                        break;
+                }
+            }
+            return ok;
         }
 
         static void Main(string[] args)
