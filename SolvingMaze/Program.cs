@@ -5,13 +5,11 @@ namespace SolvingMaze
 {
     class Program
     {
-
         static int endX = 0;
         static int endY = 0;
 
         static void ReadMazeFile()
         {
-
             string path =  @"c:\small.txt";
             string path1 = @"c:\example.txt";
             string path2 = @"c:\input.txt";
@@ -19,7 +17,7 @@ namespace SolvingMaze
             string path4 = @"c:\large_input.txt";
 
             //change the path here to try the other files
-            string[] fileLine = File.ReadAllText(path1).Trim().Split('\n'); 
+            string[] fileLine = File.ReadAllText(path4).Trim().Split('\n'); 
 
 
             string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
@@ -33,7 +31,8 @@ namespace SolvingMaze
             string[] endXY = fileLine[2].Trim().Split(' '); ;
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
-
+            Console.WriteLine(end_X);
+            Console.WriteLine(end_Y);
             endX = end_X;
             endY = end_Y;
 
@@ -45,7 +44,17 @@ namespace SolvingMaze
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
                     maze[i - 3, j] = Convert.ToChar(mazeLine[j]);
-                    Console.Write(maze[i - 3, j]);
+                    if(start_X == (i-3) && start_Y == j)                    
+                        Console.Write('S');
+                    else if(end_Y == (i-3) && end_X == j)               
+                        Console.Write('E');
+                    else if(maze[i - 3, j] == '1')
+                        Console.Write('#');
+                    else if(maze[i - 3, j] == '0')
+                        Console.Write(' ');                 
+                    else
+                        Console.Write(maze[i - 3, j]);
+
                 } //END OF FOR
                 Console.WriteLine();
             } //END OF OUTER FOR
