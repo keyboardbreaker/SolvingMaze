@@ -17,38 +17,22 @@ namespace SolvingMaze
             string [] startXY = fileLine[1].Trim().Split(' '); ;
             int start_X = Convert.ToInt32(startXY[0])+3;
             int start_Y = Convert.ToInt32(startXY[1]);
-            Console.WriteLine(start_X);
-            Console.WriteLine(start_Y);
+
             string endXY = fileLine[2];
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
 
-            //deal with coordinates,
-            // - make top left corner 0,0 based
+            string [,] maze = new string[height, width];// rows by columns
 
-
-            // row 3 will be the beginning  - walls
-            //row 4 will be 1st row of paths
-            for (int i = 3; i < fileLine.Length; i++)
+            for (int i = 3; i < fileLine.Length; i++) //rows 9 
             {
-                Console.Write("\n");
-                for (int j = 0; j < fileLine[i].Length; j++)
+                for (int j = 0; j < width; j++) //columns
                 {
-                    if (fileLine[i][j] == '0')
-                    {
-                        Console.Write(' ');
-                    }
-                    else if (fileLine[i][j] == '1')
-                    {
-                        Console.Write("#");
-                    }
+                    string[] mazeLine = fileLine[i].Trim().Split(' ');
+                    maze[i-3, j] = mazeLine[j];
 
-                    else if (i == start_X && j == start_Y)
-                    {
-                        Console.Write("S");
-                    }
                 } //END OF FOR
-            }
+            } //END OF OUTER FOR
         }
 
         static void Main(string[] args)
