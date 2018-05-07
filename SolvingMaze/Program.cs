@@ -15,23 +15,24 @@ namespace SolvingMaze
             int height = Convert.ToInt32(mapwidthHeight[1]);
 
             string [] startXY = fileLine[1].Trim().Split(' '); ;
-            int start_X = Convert.ToInt32(startXY[0])+3;
+            int start_X = Convert.ToInt32(startXY[0]);
             int start_Y = Convert.ToInt32(startXY[1]);
 
             string endXY = fileLine[2];
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
 
-            string [,] maze = new string[height, width];// rows by columns
+            bool [,] maze = new bool[height, width];// rows by columns
 
             for (int i = 3; i < fileLine.Length; i++) //rows 9 
             {
                 for (int j = 0; j < width; j++) //columns
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
-                    maze[i-3, j] = mazeLine[j];
-
+                    maze[i-3, j] = Convert.ToBoolean(Convert.ToInt32(mazeLine[j]));
+                    Console.Write(maze[i-3, j]);
                 } //END OF FOR
+                Console.WriteLine();
             } //END OF OUTER FOR
         }
 
