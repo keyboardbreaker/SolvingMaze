@@ -18,7 +18,9 @@ namespace SolvingMaze
             string path3 = @"c:\medium_input.txt";
             string path4 = @"c:\large_input.txt";
 
-            string[] fileLine = File.ReadAllText(path2).Trim().Split('\n');
+            //change the path here to try the other files
+            string[] fileLine = File.ReadAllText(path1).Trim().Split('\n'); 
+
 
             string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
             int width = Convert.ToInt32(mapwidthHeight[0]);
@@ -57,7 +59,7 @@ namespace SolvingMaze
         {
             bool ok = false;
             for (int i = 0; i < 4 && !ok; i++)
-                if (i != d)
+                if (i != d) //if i doesnt equal going backwards on a path it's already stepped
                     switch (i)
                     {
                         // 0 = up, 1 = right, 2 = down, 3 = left
