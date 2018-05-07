@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace SolvingMaze
@@ -13,8 +12,13 @@ namespace SolvingMaze
         static void ReadMazeFile()
         {
 
-            string path = @"c:\small.txt";
-            string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
+            string path =  @"c:\small.txt";
+            string path1 = @"c:\example.txt";
+            string path2 = @"c:\input.txt";
+            string path3 = @"c:\medium_input.txt";
+            string path4 = @"c:\large_input.txt";
+
+            string[] fileLine = File.ReadAllText(path2).Trim().Split('\n');
 
             string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
             int width = Convert.ToInt32(mapwidthHeight[0]);
@@ -31,29 +35,25 @@ namespace SolvingMaze
             endX = end_X;
             endY = end_Y;
 
-            bool[,] maze = new bool[height, width];// rows by columns
+            char[,] maze = new char[height, width];// rows by columns
 
             for (int i = 3; i < fileLine.Length; i++) //rows 9 
             {
                 for (int j = 0; j < width; j++) //columns
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
-                    maze[i - 3, j] = Convert.ToBoolean(Convert.ToInt32(mazeLine[j]));
+                    maze[i - 3, j] = Convert.ToChar(mazeLine[j]);
                     Console.Write(maze[i - 3, j]);
                 } //END OF FOR
                 Console.WriteLine();
             } //END OF OUTER FOR
 
             //SOLVE MAZE
-            //start_X, start_Y
-            if ((maze[end_Y, end_X] && maze[start_Y, start_X]) == false) //3 across 4 down, which 4 rows down 3 columwn right
-            {
-                solveMazeRecursively(maze, start_Y, start_X, -1);
-            }
+            solveMazeRecursively(maze, start_Y, start_X, -1);
 
         } //end of  read maze file
 
-        static bool solveMazeRecursively(bool[,] maze, int x, int y, int d)
+        static bool solveMazeRecursively(char[,] maze, int x, int y, int d)
         {
             bool ok = false;
             for (int i = 0; i < 4 && !ok; i++)
@@ -62,19 +62,19 @@ namespace SolvingMaze
                     {
                         // 0 = up, 1 = right, 2 = down, 3 = left
                         case 0:
-                            if (maze[y - 1, x] == false)
+                            if (maze[y - 1, x] == '0')
                                 ok = solveMazeRecursively(maze, x, y - 1, 2);
                             break;
                         case 1:
-                            if (maze[y, x + 1] == false)
+                            if (maze[y, x + 1] == '0')
                                 ok = solveMazeRecursively(maze, x + 1, y, 3);
                             break;
                         case 2:
-                            if (maze[y + 1, x] == false)
+                            if (maze[y + 1, x] == '0')
                                 ok = solveMazeRecursively(maze, x, y + 1, 0);
                             break;
                         case 3:
-                            if (maze[y, x - 1] == false)
+                            if (maze[y, x - 1] == '0')
                                 ok = solveMazeRecursively(maze, x - 1, y, 1);
                             break;
                     }
@@ -83,6 +83,7 @@ namespace SolvingMaze
             if (x == endX && y == endY)
                 ok = true;
             // once we have found a solution, draw it as we unwind the recursion
+            //this goes from end to start
             if (ok)
             {
                 maze[y, x] = 'X';
@@ -90,15 +91,19 @@ namespace SolvingMaze
                 {
                     case 0:
                         maze[y - 1, x] = 'X';
+                        Console.WriteLine("up");
                         break;
                     case 1:
                         maze[y, x + 1] = 'X';
+                        Console.WriteLine("right");
                         break;
                     case 2:
                         maze[y + 1, x] = 'X';
+                        Console.WriteLine("down"); //
                         break;
                     case 3:
                         maze[y, x - 1] = 'X';
+                        Console.WriteLine("left");
                         break;
                 }
             }
