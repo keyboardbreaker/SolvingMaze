@@ -5,53 +5,66 @@ namespace SolvingMaze
 {
     class Program
     {
+        static int GlobalWidth = 0;
+        static int GlobalHeight = 0;
+        static int startX = 0;
+        static int startY = 0;
         static int endX = 0;
         static int endY = 0;
 
-        static void ReadMazeFile()
+        static string[] ReadMazeFile()
         {
-            string path =  @"c:\small.txt";
+            string path = @"c:\small.txt";
             string path1 = @"c:\example.txt";
             string path2 = @"c:\input.txt";
             string path3 = @"c:\medium_input.txt";
             string path4 = @"c:\large_input.txt";
 
             //change the path here to try the other files
-            string[] fileLine = File.ReadAllText(path4).Trim().Split('\n'); 
+            string[] fileLine = File.ReadAllText(path1).Trim().Split('\n');
+            return fileLine;
+        } //end of  read maze file
 
-
+        static void Header(string[] fileLine)
+        {
             string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
             int width = Convert.ToInt32(mapwidthHeight[0]);
             int height = Convert.ToInt32(mapwidthHeight[1]);
+            GlobalWidth = width;
+            GlobalHeight = height;
 
             string[] startXY = fileLine[1].Trim().Split(' ');
             int start_X = Convert.ToInt32(startXY[0]);
             int start_Y = Convert.ToInt32(startXY[1]);
+            startX = start_X;
+            startY = start_Y;
 
             string[] endXY = fileLine[2].Trim().Split(' '); ;
             int end_X = Convert.ToInt32(endXY[0]);
             int end_Y = Convert.ToInt32(endXY[1]);
-            Console.WriteLine(end_X);
-            Console.WriteLine(end_Y);
             endX = end_X;
             endY = end_Y;
+        }
 
-            char[,] maze = new char[height, width];// rows by columns
+        static void DrawMaze(string[] fileLine)
+        {
+            //seperate maze from header
+            char[,] maze = new char[GlobalHeight, GlobalWidth];// rows by columns
 
             for (int i = 3; i < fileLine.Length; i++) //rows 9 
             {
-                for (int j = 0; j < width; j++) //columns
+                for (int j = 0; j < GlobalWidth; j++) //columns
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
                     maze[i - 3, j] = Convert.ToChar(mazeLine[j]);
-                    if(start_X == (i-3) && start_Y == j)                    
+                    if (startX == (i - 3) && startY == j)
                         Console.Write('S');
-                    else if(end_Y == (i-3) && end_X == j)               
+                    else if (endY == (i - 3) && endX == j)
                         Console.Write('E');
-                    else if(maze[i - 3, j] == '1')
+                    else if (maze[i - 3, j] == '1')
                         Console.Write('#');
-                    else if(maze[i - 3, j] == '0')
-                        Console.Write(' ');                 
+                    else if (maze[i - 3, j] == '0')
+                        Console.Write(' ');
                     else
                         Console.Write(maze[i - 3, j]);
 
@@ -60,11 +73,10 @@ namespace SolvingMaze
             } //END OF OUTER FOR
 
             //SOLVE MAZE
-            solveMazeRecursively(maze, start_Y, start_X, -1);
+            SolveMazeRecursively(maze, startY, startX, -1);
+        }
 
-        } //end of  read maze file
-
-        static bool solveMazeRecursively(char[,] maze, int x, int y, int d)
+        static bool SolveMazeRecursively(char[,] maze, int x, int y, int d)
         {
             bool ok = false;
             for (int i = 0; i < 4 && !ok; i++)
@@ -74,19 +86,19 @@ namespace SolvingMaze
                         // 0 = up, 1 = right, 2 = down, 3 = left
                         case 0:
                             if (maze[y - 1, x] == '0')
-                                ok = solveMazeRecursively(maze, x, y - 1, 2);
+                                ok = SolveMazeRecursively(maze, x, y - 1, 2);
                             break;
                         case 1:
                             if (maze[y, x + 1] == '0')
-                                ok = solveMazeRecursively(maze, x + 1, y, 3);
+                                ok = SolveMazeRecursively(maze, x + 1, y, 3);
                             break;
                         case 2:
                             if (maze[y + 1, x] == '0')
-                                ok = solveMazeRecursively(maze, x, y + 1, 0);
+                                ok = SolveMazeRecursively(maze, x, y + 1, 0);
                             break;
                         case 3:
                             if (maze[y, x - 1] == '0')
-                                ok = solveMazeRecursively(maze, x - 1, y, 1);
+                                ok = SolveMazeRecursively(maze, x - 1, y, 1);
                             break;
                     }
             
@@ -123,7 +135,10 @@ namespace SolvingMaze
 
         static void Main(string[] args)
         {
-            ReadMazeFile();
+            
+            Header(ReadMazeFile());
+            DrawMaze(ReadMazeFile());
+
         }
     } //END OF PROGRAM CLASS
 
