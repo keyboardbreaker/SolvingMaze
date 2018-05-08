@@ -21,11 +21,19 @@ namespace SolvingMaze
             string path4 = @"c:\large_input.txt";
 
             //change the path here to try the other files
-            string[] fileLine = File.ReadAllText(path1).Trim().Split('\n');
-            return fileLine;
+            try
+            {
+                string[] fileLine = File.ReadAllText(path1).Trim().Split('\n');
+                return fileLine;
+            } catch (IOException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         } //end of  read maze file
 
-        static void Header(string[] fileLine)
+        void Header(string[] fileLine)
         {
             string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
             int width = Convert.ToInt32(mapwidthHeight[0]);
@@ -46,12 +54,11 @@ namespace SolvingMaze
             endY = end_Y;
         }
 
-        static void DrawMaze(string[] fileLine)
+        void DrawMaze(string[] fileLine)
         {
-            //seperate maze from header
             char[,] maze = new char[GlobalHeight, GlobalWidth];// rows by columns
 
-            for (int i = 3; i < fileLine.Length; i++) //rows 9 
+            for (int i = 3; i < fileLine.Length; i++)
             {
                 for (int j = 0; j < GlobalWidth; j++) //columns
                 {
@@ -135,9 +142,9 @@ namespace SolvingMaze
 
         static void Main(string[] args)
         {
-            
-            Header(ReadMazeFile());
-            DrawMaze(ReadMazeFile());
+            Program prog = new Program();
+            prog.Header(ReadMazeFile());
+            prog.DrawMaze(ReadMazeFile());
 
         }
     } //END OF PROGRAM CLASS
