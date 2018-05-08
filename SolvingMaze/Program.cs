@@ -14,16 +14,18 @@ namespace SolvingMaze
 
         static string[] ReadMazeFile()
         {
-            string path = @"c:\small.txt";
-            string path1 = @"c:\example.txt";
-            string path2 = @"c:\input.txt";
-            string path3 = @"c:\medium_input.txt";
-            string path4 = @"c:\large_input.txt";
+            //Console.WriteLine(Directory.GetCurrentDirectory());
+            string path = @"..\..\Maps\example.txt";
+            string path1 = @"..\..\Maps\small.txt";
+            string path2 = @"..\..\Maps\input.txt";
+            string path3 = @"..\..\Maps\medium_input.txt";
+            string path4 = @"..\..\Maps\sparse_medium.txt";
+            string path5 = @"..\..\Maps\large_input.txt";
 
             //change the path here to try the other files
             try
             {
-                string[] fileLine = File.ReadAllText(path1).Trim().Split('\n');
+                string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
                 return fileLine;
             } catch (IOException e)
             {

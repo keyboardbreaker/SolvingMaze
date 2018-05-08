@@ -48,5 +48,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Maps\example.txt" />
+    <Content Include="Maps\input.txt" />
+    <Content Include="Maps\large_input.txt" />
+    <Content Include="Maps\medium_input.txt" />
+    <Content Include="Maps\small.txt" />
+    <Content Include="Maps\sparse_medium.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
