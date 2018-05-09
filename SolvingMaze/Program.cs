@@ -27,7 +27,8 @@ namespace SolvingMaze
             {
                 string[] fileLine = File.ReadAllText(path).Trim().Split('\n');
                 return fileLine;
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 Console.WriteLine(e);
                 throw;
@@ -37,9 +38,9 @@ namespace SolvingMaze
 
         void Header(string[] fileLine)
         {
-            string[] mapwidthHeight = fileLine[0].Trim().Split(' ');
-            int width = Convert.ToInt32(mapwidthHeight[0]);
-            int height = Convert.ToInt32(mapwidthHeight[1]);
+            string[] mazeWidthHeight = fileLine[0].Trim().Split(' ');
+            int width = Convert.ToInt32(mazeWidthHeight[0]);
+            int height = Convert.ToInt32(mazeWidthHeight[1]);
             GlobalWidth = width;
             GlobalHeight = height;
 
@@ -56,7 +57,7 @@ namespace SolvingMaze
             endY = end_Y;
         }
 
-        void DrawMaze(string[] fileLine)
+        char[,] SeperateMaze(string[] fileLine)
         {
             char[,] maze = new char[GlobalHeight, GlobalWidth];// rows by columns
 
@@ -67,16 +68,18 @@ namespace SolvingMaze
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
                     maze[i - 3, j] = Convert.ToChar(mazeLine[j]);
+                    
                 } //END OF FOR
             } //END OF OUTER FOR
+            return maze;
+        }
 
-            //SOLVE MAZE
-            SolveMazeRecursively(maze, startY, startX, -1);
-
+        void DrawMaze(char[,] maze)
+        {
             //DRAW MAZE
-            for(int i=0; i<GlobalHeight; i++)
+            for (int i = 0; i < GlobalHeight; i++)
             {
-                for(int j=0; j< GlobalWidth; j++)
+                for (int j = 0; j < GlobalWidth; j++)
                 {
                     if (startX == i && startY == j)
                         Console.Write('S');
@@ -93,7 +96,7 @@ namespace SolvingMaze
             } //END OF INNER FOR
         } //END OF DRAW MAZE
 
-        static bool SolveMazeRecursively(char[,] maze, int x, int y, int d)
+        bool SolveMazeRecursively(char[,] maze, int x, int y, int d)
         {
             bool ok = false;
             for (int i = 0; i < 4 && !ok; i++)
@@ -118,7 +121,7 @@ namespace SolvingMaze
                                 ok = SolveMazeRecursively(maze, x - 1, y, 1);
                             break;
                     }
-            
+
             // check for end condition
             if (x == endX && y == endY)
                 ok = true;
@@ -135,7 +138,7 @@ namespace SolvingMaze
                         break;
                     case 1:
                         maze[y, x + 1] = 'X';
-                       // Console.WriteLine("right");
+                        // Console.WriteLine("right");
                         break;
                     case 2:
                         maze[y + 1, x] = 'X';
@@ -148,14 +151,15 @@ namespace SolvingMaze
                 }
             }
             return ok;
-        }
+        } //END OF SolveMazeRecursively
 
         static void Main(string[] args)
         {
             Program prog = new Program();
             prog.Header(ReadMazeFile());
-            prog.DrawMaze(ReadMazeFile());
-
+            char[,] map = prog.SeperateMaze(ReadMazeFile());
+            prog.SolveMazeRecursively(map, startY, startX, -1);
+            prog.DrawMaze(map);
         }
     } //END OF PROGRAM CLASS
 
