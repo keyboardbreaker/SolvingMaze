@@ -60,30 +60,38 @@ namespace SolvingMaze
         {
             char[,] maze = new char[GlobalHeight, GlobalWidth];// rows by columns
 
+            //SEPERATE THE MAZE FROM HEADER
             for (int i = 3; i < fileLine.Length; i++)
             {
                 for (int j = 0; j < GlobalWidth; j++) //columns
                 {
                     string[] mazeLine = fileLine[i].Trim().Split(' ');
                     maze[i - 3, j] = Convert.ToChar(mazeLine[j]);
-                    if (startX == (i - 3) && startY == j)
-                        Console.Write('S');
-                    else if (endY == (i - 3) && endX == j)
-                        Console.Write('E');
-                    else if (maze[i - 3, j] == '1')
-                        Console.Write('#');
-                    else if (maze[i - 3, j] == '0')
-                        Console.Write(' ');
-                    else
-                        Console.Write(maze[i - 3, j]);
-
                 } //END OF FOR
-                Console.WriteLine();
             } //END OF OUTER FOR
 
             //SOLVE MAZE
             SolveMazeRecursively(maze, startY, startX, -1);
-        }
+
+            //DRAW MAZE
+            for(int i=0; i<GlobalHeight; i++)
+            {
+                for(int j=0; j< GlobalWidth; j++)
+                {
+                    if (startX == i && startY == j)
+                        Console.Write('S');
+                    else if (endY == i && endX == j)
+                        Console.Write('E');
+                    else if (maze[i, j] == '1')
+                        Console.Write('#');
+                    else if (maze[i, j] == '0')
+                        Console.Write(' ');
+                    else
+                        Console.Write(maze[i, j]);
+                } //END OF FOR
+                Console.WriteLine();
+            } //END OF INNER FOR
+        } //END OF DRAW MAZE
 
         static bool SolveMazeRecursively(char[,] maze, int x, int y, int d)
         {
@@ -123,19 +131,19 @@ namespace SolvingMaze
                 {
                     case 0:
                         maze[y - 1, x] = 'X';
-                        Console.WriteLine("up");
+                        //Console.WriteLine("up");
                         break;
                     case 1:
                         maze[y, x + 1] = 'X';
-                        Console.WriteLine("right");
+                       // Console.WriteLine("right");
                         break;
                     case 2:
                         maze[y + 1, x] = 'X';
-                        Console.WriteLine("down"); //
+                        //Console.WriteLine("down"); //
                         break;
                     case 3:
                         maze[y, x - 1] = 'X';
-                        Console.WriteLine("left");
+                        //Console.WriteLine("left");
                         break;
                 }
             }
