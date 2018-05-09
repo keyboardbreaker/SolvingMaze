@@ -98,7 +98,44 @@ namespace SolvingMaze
 
         bool SolveMazeRecursively(char[,] maze, int x, int y, int d)
         {
-            bool ok = false;
+            bool solvable = false;
+            solvable = IsMazeSolvable(maze, x, y, d, solvable);
+
+            if (solvable)
+            // once we have found a solution, draw it as we unwind the recursion
+            //this goes from end to start
+            {
+                DrawRoute(maze, x, y, d);
+            }
+            return solvable;
+        } //END OF SolveMazeRecursively
+
+        private static void DrawRoute(char[,] maze, int x, int y, int d)
+        {
+            maze[y, x] = 'X';
+            switch (d)
+            {
+                case 0:
+                    maze[y - 1, x] = 'X';
+                    //Console.WriteLine("up");
+                    break;
+                case 1:
+                    maze[y, x + 1] = 'X';
+                    // Console.WriteLine("right");
+                    break;
+                case 2:
+                    maze[y + 1, x] = 'X';
+                    //Console.WriteLine("down"); //
+                    break;
+                case 3:
+                    maze[y, x - 1] = 'X';
+                    //Console.WriteLine("left");
+                    break;
+            }
+        }
+
+        private bool IsMazeSolvable(char[,] maze, int x, int y, int d, bool ok)
+        {
             for (int i = 0; i < 4 && !ok; i++)
                 if (i != d) //if i doesnt equal going backwards on a path it's already stepped
                     switch (i)
@@ -125,33 +162,8 @@ namespace SolvingMaze
             // check for end condition
             if (x == endX && y == endY)
                 ok = true;
-            // once we have found a solution, draw it as we unwind the recursion
-            //this goes from end to start
-            if (ok)
-            {
-                maze[y, x] = 'X';
-                switch (d)
-                {
-                    case 0:
-                        maze[y - 1, x] = 'X';
-                        //Console.WriteLine("up");
-                        break;
-                    case 1:
-                        maze[y, x + 1] = 'X';
-                        // Console.WriteLine("right");
-                        break;
-                    case 2:
-                        maze[y + 1, x] = 'X';
-                        //Console.WriteLine("down"); //
-                        break;
-                    case 3:
-                        maze[y, x - 1] = 'X';
-                        //Console.WriteLine("left");
-                        break;
-                }
-            }
             return ok;
-        } //END OF SolveMazeRecursively
+        }
 
         static void Main(string[] args)
         {
